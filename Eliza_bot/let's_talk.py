@@ -1,9 +1,9 @@
 
-# coding: utf-8
-
-# In[7]:
-
-
+ """
+ @Author __Niraj Dev Pandey__
+ Purpose __Learn the beginning of bot arena__
+ """
+    
 import re
 import random
 
@@ -251,7 +251,7 @@ def analyze(statement):
             return response.format(*[reflect(g) for g in match.groups()])
 
 def main():
-    print ("Hello. I am a bot developed by Niraj :) "           " How may I assist you?")
+    print ("Hello. I am a bot developed by Niraj :) How may I assist you?")
  
     while True:
         statement = input("> ")
