@@ -1,0 +1,541 @@
+Introduction 
+This document contains the basic theoretical and practical principles of mobile data entry (MDE) for the eEvolution merchandise management system. 
+With the help of a mobile data entry system, it is possible to design much more efficient logistics processes in a company since it is not necessary any more to perform all these tasks manually. Instead, you can simply scan items with an MDE scanner, which then sends the corresponding information directly to the merchandise management system. The advantage in this case is that the storage locations, batch numbers, and serial numbers do not have to be entered manually any more, which then prevents errors when entering the data. 
+ With the eEvolution merchandise management system, it is possible to use the following functionality in the context of mobile data entry:
+* Placement of items in stock 
+* Stock transfers of items
+* Picking of items
+* Packaging of items
+* Reading items for the purpose of inventory
+The following sections deal with the basic theoretical principles as well as the practical requirements for the use of mobile data entry. A brief treatment of the barcodes used in the eEvolution standard is presented, as well as the practical application of mobile data entry in eEvolution. 
+General 
+Access to the MDE Suite is obtained through a terminal server on which eEvolution is installed. Mobile data entry is then performed with a mobile hand-held device that connects to the terminal server using the Remote Desktop Protocol and then obtains direct access there to the MDE Suite from eEvolution. 
+It is possible to save the login data as start parameters in a link on the desktop so you can log in to eEvolution automatically. This eliminates the need to log in manually to the database using the login screen since the login screen cannot be shown in full anyway on the small display of the MDE device. 
+In eEvolution, the start parameters for all modules basically consist of the following parameters:
+'c:\Programme\eEvolution' MDE-Suite.exe <DATENBANK> <MANDANTENNUMMER> <LOGIN> <PASSWORT>
+*  'c:\programs\eEvolution': Here you can enter the path to the *.exe on the terminal server. 
+* <DATABASE>: Here you can enter the name of the default database a user is automatically logged on to. 
+* <CLIENT ID>: Here you can enter the consecutive number of the client, under whose name the module is to be registered automatically.
+* <LOGIN>: Here you can enter the name of the user to be logged on automatically to the database. 
+* <PASSWORD> : Here you can enter the password allocated to the user. 
+Note:
+The password is entered in plain text!
+Example for the use of start parameters: 
+'c:\Programme\eEvolution' MDE-Einlagerung.exe DEMO 1 EEVOLUTION eevolution
+'c:\Programme\eEvolution' MDE-Inventur.exe DEMO 1 EEVOLUTION eevolution
+'c:\Programme\eEvolution' MDE-Kommission.exe DEMO 1 EEVOLUTION eevolution 'c:\Programme\eEvolution' MDE-Umbuchung.exe DEMO 1 EEVOLUTION eevolution
+'c:\Programme\eEvolution' MDE-Verpacken.exe DEMO 1 EEVOLUTION eevolution
+ 
+
+ 
+A the resolution of the default masks used in eEvolution are not suited for mobile data entry devices, special MDE-masks were developed. The following MDE-masks are available:
+* MDE storage
+* MDE Inventory
+* MDE picking
+* MDE re-booking
+* MDC during Packaging
+These masks have been optimized for display sizes of 320 x 240 pixels, they can, however, be used without any problem for individual display formats. For this, launch the eEvolution Customizer using the shortcut CTRL and F8 to adapt the dialog window to your individual needs. 
+Important note
+All changes you make to the graphical user interface do not have any effect on the MDE-Suite functions. Read more about this in the online help for the Customizer. 
+System Requirements
+This means that the following system requirements must be met by the mobile hand-held device for it to be compatible with the MDE Suite:
+* Operation using the Windows Mobile operating system 
+Specifically, Windows CE, Windows Mobile 5, Windows Mobile 6.1, and Windows Mobile 6.5 are supported as well as all operating systems that provide an RDP client and can send the string read in as keyboard input to the RDP application.
+* Ability to establish a remote desktop connection to the terminal server
+Recommendation:
+* Ability to read a 2D barcode data matrix so that the standard barcode can be used.
+For the terminal server, though, the system requirements described in the installation instructions of your eEvolution system apply.
+Technical Implementation 
+The MDE Suite uses the normal processes of eEvolution. It only uses a mobile data entry device in connection with the MDE screens optimized for them instead of a requiring you to enter the data manually. 
+In this case, eEvolution interprets the information read by the hand-held device and then displays it in a legible form on the screen using the MDE screens. 
+Basically, a scanning operation can be described as follows:
+When scanning in a barcode, the MDE device simulates the keyboard input required to enter all the information encoded in the barcode. This input could be the item number, picking number, batch number, storage location number, or serial number, for example.
+The MDE device can enter this data in a fraction of a second. After that, a command is sent informing eEvolution that the corresponding data was entered successfully. The command sent to eEvolution basically has the same meaning as when manually pressing the ENTER key after entering data manually. 
+Barcode Definition
+For mobile data entry in eEvolution, it is necessary to defined a standardized barcode for items, storage locations, pick lists, and packaging. A barcode is able to represent data using binary symbols that can then be easily processed by machines. The barcode is simply printed together with the information already available in plain text on the corresponding documents such as the pick lists or item labels, for example. A barcode can be generated automatically in eEvolution, and the barcode itself is created List & Label. To accomplish this, you only need to edit the corresponding L&L report in the List & Label designer and insert the appropriate barcode supported by L&L and the MDE device at the desired position. 
+Over the years, many different types of barcodes have been developed that use different methods to encode the machine-readable information. The result is that the MDE modules need to be adapted to match the properties of a barcode when you do not want to use the standard eevolution barcode. Such adjustments are fairly common in customer projects, though. The barcodes available for implementation are based on the capabilities of the List & Label designer used in iReport and the MDE device used. This theoretically provides you with the ability to implement the following barcodes. The only thing that is important in this case is that you always use the same string format for the coding scheme.
+Summary of general 1-D barcodes:
+* GTIN-13
+* EAN-13
+* UCC-13
+* JAN-13
+* EAN-14
+* UCC-14
+* GTIN-8 
+* EAN-8
+* UCC-8
+* JAN-8
+* UPC-A
+* UPC-E
+* 2 of 5 Industrial
+* 2 of 5 Interleaved (ITF)
+* 2 of 5 Matrix
+* 2 of 5 Datalogic
+* Codabar
+* CODE11 
+* Code39
+* 3 of 9
+* Alpha39
+* Expanded code 39
+* Code 39 with CRC
+* code 93 (simple and extended)
+* Code128
+* GS1 128, EAN128
+* GS1 DataBar (Limited, Stacked, Stacked Omnidirectional, Stacked Truncated)
+* GS1 DataBar Expanded
+* ISBN
+* ISBN-13 
+* MSI
+* PZN (pharmaceutical registration number) 
+* QR Code 
+* SSCC/NVE
+ 
+Summary of general 2-D codes
+* Aztec
+* Datamatrix 
+* PDF417
+More information on the barcodes listed here can be found in the List & Label designer help system. 
+In the context of mobile data entry, a barcode is read by a scanner, and the scanner then automatically converts it to a character string. This character string is sent to eEvolution for further processing, where it then needs to be interpreted in order to copy the data correctly into the database and display it properly in the screens. The exact definition of the format of this character string is not determined in this case by the barcode. It only defines the rough format and the limitations associated with it. This needs to be taken into account when defining the string format. In EAN-13, for example, only the numbers from 0-9 are represented, while the 2D data matrix barcode ECC 200 recommended in the eEvolution standard can not only represent numbers, but also text (including German umlauts). 
+Barcode Definitions in eEvolution
+This section deals with the standard definition of a barcode in eEvolution. 
+ 
+In eEvolution, it is recommended to use the 2D data matrix barcode ECC 200 (see the Figure), which provides a very powerful error correction algorithm. Another advantage of this barcode is its ability to provide large amounts of data for machine processing while requiring relatively little space. Up to 30 characters can be encoded on an area of about 25 square millimeters. Another important point is support for different compression methods for text, numbers, or binary data. Even German umlauts can be represented without any problems. 
+
+For these reasons, this barcode was implemented in the standard in the corresponding reports in eEvolution. There is a standardized barcode for the items, the storage locations, and the pick lists, for example, which are described in detail in section 3.1.1. 
+ 
+In the standard definition of a character string in eEvolution, the square brackets '[ ]' point out optional values. There is a prefix at the beginning of every character string so that the system can correctly identify the data in the character string stored in the barcode. The default definition supports the following prefixes:
+* ITEMNOS = Item label
+* STLOCLAB = Storage location label
+* PICKL = Pick list 
+* PICKLAB = Pick label
+Individual values are separated in this case by a separator that can be configured in the MDE Suite. The default separator is '|'. Every character string also ends with a separator. In all other cases, a prefix which uniquely identifies the contained value ALWAYS follows a separator. The only exception to this rule is the separator at the end of a character string. In eEvolution, the following prefixes are available in the framework of the standard definition:
+* ITEMNO. = Item number
+* QTY = Quantity 
+* SNO = Serial number
+* BATNO = Batch number
+* WHNO = Warehouse number
+* CONSNO = Consecutive Number 
+Note:
+A storage location label thus indicates the 'Storage location number per item'
+* STLOC = Unique storage location
+* PICKNO = Picking number
+Each prefix is followed by a blank and the appropriate value. 
+ 
+Example:
+'ITEMNOS |ITEMNOR 123455|QTY 5|' 
+ 
+This standard definition allows a high degree of flexibility when entering a character string. By entering a prefix before the specific value, you do not have to depend on a strict order within the character string, and you are also more flexible in terms of program extensions. 
+The following section deals with the standard definition in eEvolution for item labels, storage location labels, and pick lists. You can also use other barcode definitions, of course.
+The Item Label Barcode 
+The item barcode is printed on the item label. 
+The underlying report in this case is named 'artsofob2.lst' and can be found in the execution directory of eEvolution in the QRP folder. 
+
+In this case, the barcode usually contains the same information as already contained in the plain text printed on the item label. In the eEvolution standard, the item label always contains the item number, the quantity, and the series or batch number, if necessary. 
+Important note:
+The value valid and defined for the packaging unit for the item is used as the quantity. If no packaging unit is defined, then the quantity is 1. 
+
+ 
+In item barcodes, this information is thus shown in coded form:
+* String prefix - ITEMNOS 
+* Item No.- ITEMNO
+* Quantity (for individual items, the quantity is = 1) - QTY
+* Serial number (for items controlled by serial numbers) - SNO
+* Batch (for batch-controlled items) - BAT
+From this results the following definition for a character string: 
+'ITEMNOS|ITEMNO Item number |QTY Quantity|[SNO Serial number | ] [BAT Batch|]'
+Note:
+By entering the string mentioned above, you can also simulate a mobile data entry device, but you must use the exact same format as described above!
+The Storage Location Label Barcode
+The individual storage locations need a barcode so that an item can be read in, placed in stock, transferred, picked, or packed correctly. By assigning a barcode to each storage location, it is possible to assign items or remove items scanned by the mobile data entry device to and from the bins. 
+The storage location barcode is printed on the storage location label. The report 'lagerpl.lst' is used as the basis in this case. It can also be found in the QRP folder in the execution directory of eEvolution. 
+
+The storage location label usually contains the name of the warehouse and the coordinates in the plain text, while all other information is contained in the barcode. The barcode includes the following information: 
+* String prefix - WHLAB 
+* Uniqe warehouse number - WHNO
+* Storage location number (per item) - CONSNO
+* Unique storage location - STLOC
+* Coordinate 1 - 5 - *
+Please note:
+By default, the individual coordinates are separated by the '*' separator. It is possible to configure your own separator in the MDE settings. 
+The following string, on the basis of which the barcode will be generated, was developed based on this: 
+'WHET|WHNO Warehouse number|CONSNO Storage location number|STLOC Coordinate1 [*Coordinate2] [*Coordinate3] [*Coordinate4] [*Coordinate5] |'
+Note:
+By entering the string mentioned above, you can also simulate a mobile data entry device, but you must use the exact same format as described above!
+Pick List Barcode
+The pick list needs its own barcode so that it is possible to associate commission numbers to pick lists without any problems. The barcode therefore contains the commission number, which can then be used to uniquely identify a pick list. In contrast to the item labels and storage location labels, the pick list also contains addition information in plain text that is essential to a pick list:
+* Picking No:
+* Order No.
+* All items to be picked including the item numbers, item names, and quantities 
+* W/H coord. 
+
+ 
+This information is necessary so that the person picking can determine the order of picking by themselves. 
+Note:
+A guided picking process can be activated for items having labels without standard markings. 
+The corresponding report can be found under the name 'kompick10.lst' in the QRP folder. 
+For this reason, the barcode of the pick list itself only contains the following information: 
+* String prefix - PICKL
+* Picking No. - KOMMNR
+This results in the following string, which can then be used to generate this barcode in eEvolution: 
+'PICKL|KOMMNR picking number|'
+Note:
+By entering the string mentioned above, you can also simulate a mobile data entry device, but you must use the exact same format as described above!
+Pick Label
+A pick label is used if items are placed in stock without item labels. The pick labels contain the most important information on the commission. This is to ensure that it is still easy to associate items to the correct commission without any problems. Usually, the commission number, the item number, the quantity and, if necessary, the serial number or batch number are printed in plain text on the labels. To ensure this process can also be simplified using mobile data entry, a barcode with this data also needs to be added to the pick labels. 
+Note:
+If the items stored in stock have item labels, then the use of a pick label is optional. 
+This report is named 'picklabel.lst' and can be found in the QRP folder in the execution directory of eEvolution. 
+
+ 
+The barcode includes the following information: 
+* String prefix - PICKET
+* Item number - ITEMNO
+* Quantity - QTY
+* Serial number (for items controlled by serial numbers) - SNO
+* Batch (for batch-controlled items) - CHR
+* Picking No. - PICKNO 
+Overview of the Processes
+Mobile data entry (MDE) consists of stock placement, stock transfer, picking, inventory, and the packing of items. The MDE module is based on the same functionality as the corresponding standard eEvolution modules. The MDE Stock Transfer module therefore uses the same functions as in the Item Management module, the MDE Stock Placement module as in the Purchasing Management module, the MDE Picking module and MDE Packing module as the Picking module, and the MDE Inventory Management module as the Inventory Management module. You should not forget in this case that the individual processes are interrelated so certain settings in the Picking and Item Management modules must be specified in order to be able to use mobile data entry correctly. The following section therefore deals with with the modules involved and the processes executed in these modules. 
+Item Management
+Mobile data entry devices can be used in various scenarios, for which different preconditions must be met. 
+Being able to identify an item and determine its storage location is generally a good idea. MDE modules, however, can also be used without any problem, when these preconditions are actually not met. 
+Please note:
+For series number or batch number controlled items, it is essential that individual items or batches can be clearly identified. For other items, it is only required that a certain quantity of products is registered in eEvolution. 
+ 
+All required item information can be made available to mobile data entry devices by means of a barcode. The related data stored in a barcode can be read automatically and then evaluated by the software. Items should therefore be identified by an item barcode, which should preferably include series and batch numbers as well. 
+Storage locations use a barcode for automatic item retrieval and receipt control. 
+For mobile data entry, all items must have a specific storage location or storage bin. This is an absolute must, because a specific storage location is required for all MDE-processes. The relevant classification can be made in the Item Management Module under Details -> Warehouse. 
+Note:
+You may want to add a script using the Callout Script Administration, that checks before storing, whether a storage location or storage bin has already been allocated to the item, and if not, inform the user accordingly. 
+MDE Settings in the Item Management Module: 
+In the Item Management module, there are various item properties that were specially implemented for mobile data entry. Please find a short description below:
+* Autom.creation of labels when storing
+These options allow labels to be printed automatically after the stock placement operation for items managed by serial number or by batch or for items for which a packaging unit was stored. As soon as an item has been stored, the appropriate labels for the item are printed automatically. 
+The number of item labels that can be printed when placing items in stock can be determined as follows:
+1. You mark this option in the Item module and enable 'Only print labels for marked items' in the Purchasing Management module under Basic Setting 2. In this case, a label is printed for each item to be placed in storage. 
+2. You can specify the number of labels to be printed manually in the Stock Placement dialog as an alternative. To specify this value, you must enable the 'Barcode labels' checkbox in the Stock Placement dialog and enter the desired number of labels in the No. column. 
+Please note:
+Only the number of labels entered here will be printed! 
+ 
+Note:
+This option is primarily intended for items that are not labeled by the suppliers.
+* Small part
+Please note:
+This property only works for items in which the 'Automatic creation of labels' option has been enabled. 
+You can print one label for several items here so that the screws, for example, do not have to be labeled individually. Of course, you must take great care at this point when using mobile data entry to ensure the correct number of items are actual removed. 
+Note:
+This label is printed when placing the item in stock in Purchasing Management module. 
+ 
+Both settings can be found on the Settings tab: 
+
+* Packaging unit
+A packaging unit is used to combine a certain quantity of identical items to form a group. The quantity specified here is then used when printing the item labels so that you do not have to label items individually when the items are not managed by serial number or by batch. You can also specify the dimensions of the packaging unit here and enable and disable them separately for each item. 
+* It is possible to store several EAN numbers per packaging unit since these numbers may differ for each packaging unit even when the packaging units are identical. 
+These settings can be found on the Miscellaneous tab:
+
+There are also two more settings in the system settings that are relevant to mobile data entry: 
+* When creating a new item, the item label should be printed automatically. For this reason, we have added the option 'Print item label when creating new storage locations' to the settings. When using mobile data entry devices, every item should be assigned to a storage location, where an item label is subsequently printed that should be applied to the shelf in the warehouse to help identify the item faster.
+ 
+Important note
+A label for all the items in a storage location is only printed for items not managed by serial number or by batch. For items managed by serial number or by batch, though, only one label per serial number or batch is printed. 
+* The option 'Storage location label when creating new storage locations' only takes effect when an item is assigned to a storage location that has not been defined yet. In this case, a shelf label is printed automatically for this storage location. When a stock transfer takes place, the shelf label can be moved with the stock, meaning a new label does not need to be printed out as long as no new storage location was defined during the stock transfer. 
+The Settings dialog can be opened via the System menu item. The options listed here can be found on the Basic Settings 2 tab:
+
+The labels can also be printed later on, of course. To print them later on, you must select the 'Print item immediately' option under Action. 
+Purchase Order Management
+The Purchasing Management module contains all important business processes affecting the order of goods and their subsequent placement in stock. All business processes relating to the placement of newly purchased or produced goods in stock are controlled there. Only the purchased goods are stored in the Purchasing Management module while the goods produced by the company itself are placed in stock via the Production module. 
+In the Purchasing Management module, the implemented order suggestion system automatically receives all necessary data, including data from logistics to which the manually generated order suggestions belong, as well as from the order or from production. After compiling the approved order suggestions for the actual order, the purchase orders are monitored or a reminder is issued in the Goods Receipt module, where all order information is collected and made available for further processing. 
+Order Picking 
+The Picking module is linked to the Order, Purchasing, and Item base modules so that only goods that are actually available in the warehouse can be picked. Picking can be designed to be much more efficient using mobile data entry. With mobile data entry, it is possible to use barcodes on the pick list that can be read using the mobile data entry device and then picked after that.
+If the Picking module is installed, then an order can be passed to it after it has been processed. The warehouse employee responsible can then print out the pick list immediately, including the corresponding pick labels, and then start picking. To do this, the employee opens the Picking module on the mobile data entry device, with which he then subsequently scans in the pick list barcode. Based on this barcode, the MDE device now searches for the appropriate commission in the database and displays it together with its line items on the screen. 
+Please note:
+In the default settings, the order of the line items is determined by the line items in the order. However, you can choose when transferring the commission to sort the positions automatically in a different order. Using the setting 'Sort the commi. pos. according to storage location' on the 'Picking' tab in the system configuration, you can sort the positions on the pick list based on their storage locations.
+It is also possible, though, to implement an individual, customer-specific sort order for the pick list using a scripting hook. 
+ 
+Picking is generally performed based on the order prescribed on the pick list. The pick list sort order in this case can be specified individually for the customer using a customer-specific modification. The picking of an item with a mobile data entry device always follows the same pattern in this case. 
+First, the storage location label of the item to be picked is scanned, and only after that is the item to be picked scanned and the quantity to be removed entered. It automatically checks if the scanned item is located in the correct storage location. This check ensures that the correct item was actually picked and allows you to eliminate incorrect storage locations and item assignments immediately. 
+An item is only correctly picked when the item is actually assigned to the storage location. Otherwise a message is output stating that the picking operation was incorrect. If the correct item is removed from the storage location, then the pick label is placed on the item. 
+As soon as picking is completed, completion of picking is reported. It is possible then to make a record of all deviations between the total amounts ordered and the actual amounts picked and then inform the person doing the picking of the deviations. This person then has the opportunity to eliminate or accept these differences.
+Note:
+In System Settings 1 in the Picking module, you can specify if the agent responsible for the order should be informed by email when deviations in the amounts are accepted. This email contains the picking number, the corresponding order number, and the item that was over- or underpicked together with the corresponding amounts. The option 'Email for under-/overpickings' is used for this purpose
+However, it is also possible to reset the picked amounts, including the corresponding assignments such as the storage location, batch and/or serial return and complete the picking at a later time in the Picking module on a PC or via the MDE Picking module.
+Settings for Picking and Packing 
+In connection with picking, a series of settings relevant to MDE can be specified. They will be described briefly below. For all additional information in this case, consult the help for the picking system since here we only briefly describe the MDE settings for picking and packaging and do not explain them in more detail. 
+Note:
+Some settings in the MDE standard are not used due to the limited size of the screens of MDE devices. 
+ 
+On the 'System Settings 1' tab, the following parameters are of interest in this context: 
+
+ 
+* 'Security request if underpicking'
+When this check-box is marked, a security window will appear prompting you to confirm that underpicking really is to be performed. 
+* 'Allow overpicking'
+If this checkbox is enabled, then overpicking can be performed. Otherwise they will return an error message. 
+* 'Security request if overpicking'
+If this checkbox is enabled, then a security prompt will appear asking if the overpicking should actually be executed.
+* 'Set partial order pickings to deliverable'
+If this checkbox is enabled, then a only partially picked delivery can be shipped. 
+* 'Discard remaining quantity for partial picks'
+If this checkbox is enabled, then incomplete commission positions will be rejected. 
+Please note:This option is only available if the 'Partial delivery' radio button is activated!
+* 'e-mail for under- or overpickings'
+If this checkbox is enabled, then a message is automatically sent to agent specified in the order in case of under- or overpicking. 
+* 'Deviating email address'
+It is possible to enter an alternative email address to which an email will be sent automatically if an under- or overdelivery has taken place.
+Please note:
+The last setting made prevails!
+ 
+This e-mail is automatically generated; it contains the following main features:
+Ref.: Differences were discovered in the picking proces: CID00236 - Order Picking 1232!
+Contents: 
+Picking No: CID00236 - Order 1232
+Underpicking by 2 unit(s) at line item 2, Item No. 4010010 and ItemNam. 'Fridge VSE 060 DX'.
+Overpicking by 2 unit(s) at line item 1, Item No. 4040008 and ItemNam. 'Stainless steel worktop 4DII'. 
+ 
+On the 'User settings' tab, the following check-boxes are of importance:
+
+* 'Print labels'
+This check-box controls, whether picking labels can be printed.
+* 'Print pick labels' 
+This check-box controls, whether picket labels are to be printed by picking list order.
+* 'Print pick label in the background' 
+Activate this check-box to have the picket labels printed automatically without having to confirm the print job in the print screen. 
+Note:
+When using mobile data entry devices, pick labels  are generally printed via the terminal server on the default printed.
+ 
+The following setting options are available in the system configuration menu of the installation module on the tab 'MDE-Settings':
+ 
+ 
+There are several basic settings required for mobile data entry devices in the field group 'MDE settings':
+* Barcode separator
+* Storage location coordinates separator
+There are several settings required in the field group 'MDE Picking':
+* Scan label without standard label
+Important note!
+These labels include the Item No. or the EANNo and the storage location coordinates separated by the 'Storage location coordinates separator'. 
+* Enable controlled picking
+The order picker is obliged to work from the top line item to the bottom. 
+ 
+Important note!
+For this setting to work properly, the menu item 'Scan label without standard label' must be enabled. This setting is invalid for standard labels!
+* Activate cancellation mode
+* When canceling duplicate storage locations: 
+* Scan the storage location
+* Select from a table
+* Print delivery note
+* Report selection 
+* Quantity 
+There are several setting options available in the field group 'MDE Packing':
+* The displayed picks when packing are:
+* Not packed
+* Not loaded
+* Printout after packing
+* Print packing list
+* Request printout of packaging list
+Note:
+Only active, when the packing list is being printed.
+* Print packet labels according to packing list
+Note:
+Only active, when the packing list is being printed.
+Stocktaking
+With the Inventory Management module, it is possible to perform permanent as well as annual inventories. When performing an annual inventory, you record all inventory stock levels on a specific day of the year. In the permanent inventory, the inventory stock levels are recorded continuously throughout the year and documented on a closing day of your choice.
+Before you can use mobile data entry for inventory, you must first create the inventory in the Inventory Management module. It is important in this case to note that there is only one open inventory in the system since the MDE Inventory Management module automatically searches for an open inventory in the database. 
+When taking inventory with a mobile data entry device in this case, the storage location barcode is scanned first, and then the item barcode is scanned. This allows you to check if an item is assigned to the right storage location. If everything is correct, then the name of the item is displayed and you can enter the corresponding number of items. Otherwise an error message will appear since incorrect storage location and item combinations will not be accepted. In this case, the serial number must be stored for an item managed by serial number, and the the batch number must be stored for an item managed by batch. As soon as all items have been entered accordingly, the inventory must be closed using the Inventory Management module. With the MDE Inventory Management module, you can only enter the amounts that are intended to make collecting all the necessary data for an inventory easier. All other processes are executed as usual using the Inventory Management module. 
+MDE Modules
+The MDE-modules available in eEvolution are presented in this section. This refers to the following modules: 
+* MDE storage
+* MDE re-booking
+* MDE picking
+* MDC during Packaging
+* MDE Inventory
+In conjunction with the MDE modules, it should be noted that they control the standard eEvolution functions, although they have their own validation checks. They may deviate slightly from the standard since they were optimized for use with the small screens of MDE devices. 
+Note:
+For this reason, it is recommended to compare the requirements specific to the project with the functions available in the standard. 
+ 
+If the resolution of an MDE device is less than the minimum resolution allowed for the MDE modules (800 x 600 pixels), then the login screen for the MDE modules adapts dynamically to the corresponding resolution of the MDE device on which the MDE modules will be executed.
+The login screen was adapted to resolutions as low as 800 x 600 pixels so that all information is visible on one screen:
+
+if the resolution is equal to or greater than 800 x 600 pixels, then is the login screen you are already familiar with from eEvolution is used to log in. 
+MDE Stock Transfer
+All items can be placed in storage using a mobile data entry device as well, as long as the items are equipped with corresponding barcodes. In this case, the MDE Stock Transfer module takes over the functions implemented in the stock transfer dialog in the Purchasing Management module. 
+Using mobile data entry, you do not need to enter all data for an item manually by hand, for example data such as serial numbers, batches, and storage locations, but can read the data in directly via the item barcode using the mobile data entry device. 
+Note:
+The barcode definition in eEvolution can be customized in the framework of a customer project. 
+In the ideal case, it is only necessary now to enter the delivery note numbers and the amount delivered directly in the MDE device while the rest of the information needed can simply be scanned in. 
+As a general rule, the settings specified inthe Purchasing Management module under System -> Settings for stock transfers apply to the MDE stock transfer module. 
+IMPORTANT NOTE!
+In the MDE standard, some settings are ignored due to the limited size of the screens of MDE devices. The MDE stock transfer module the eEvolution standard functions, but has its own check routines and parameters that differ in some cases from the standard. No labels are printed, for example. It is assumed that the items already have labels when using the MDE stock transfer module. 
+There is a parameter for the MDE stock transfer module that allows the program to respond differently than specified by the system settings in the Purchasing module in case of under- and overpicking when using the MDE stock transfer module. 
+This parameter must be entered directly in the Inst under Action -> System Setting. As soon as this parameter is entered in the system settings, the parameter 'Permit over-/underdeliveries?' in the Purchasing Management module in Basic Settings 2 will be ignored by the MDE stock transfer module. The parameter 'MDE_OverUnderdeliveryAllowed' can have the following values: 
+0 = Over- and underdeliveries are NOT allowed 
+1 = Over- and underdeliveries are allowed 
+2 = ONLY overdeliveries are allowed 
+3 = ONLY underdeliveries are allowed 
+Important note:
+If this parameter is not included in the system settings, the configuration made in the Purchase Management module will prevail.
+The MDE storage process can be described as follows:
+
+1. The user receives a message that a new delivery has arrived. 
+2. The user receives the delivery.
+3. The user opens the MDE Stock Transfer module on the MDE device. 
+4. The user now enters the (internal) collective purchase order number for the items to be placed in storage. 
+5. The user enters the delivery note number for the items to be placed in storage. 
+6. The user scans the barcode of the item to be placed in storage. 
+Note:
+If the barcode cannot be read, then the following steps must be executed first:
+1. The user must enter the or EAN manually. The missing information is read automatically from the database by eEvolution.
+2. The user must enter the serial numbers/batch numbers manually. The information is passed to the Item module where the item labels can then be printed. 
+Note:
+It makes sense to apply barcodes to the items to be placed in storage in case the item barcode of the supplier does not match your own barcode. 
+7. The user scans the storage location barcode of the location where the item will be stored. 
+If the item has a serial number, then steps 6 and 7 must be repeated for each item. 
+8. The user now enters the amount to be placed in storage. 
+9. Every input can be confirmed by clicking on the icon after making each entry. As an alternative, the user can also confirm the entry using the ENTER key. In each case, the item is immediately stored automatically after making the last entry. 
+The process can be canceled using the  icon.
+10. If the entire amount is not stored, then the amount is marked as follows corresponding to the settings specified in the Purchasing Management module:
+* Overdelivery
+* Underdelivery
+Please note:
+Overdeliveries and underdeliveries are only permitted if the option 'Permit over-/underdeliveries?' is enabled in the Purchasing Management module settings on the Basic Settings 2 tab. 
+* Partial delivery 
+Steps 6 - 10 must be executed for each new item/batch within a collective purchase order. 
+MDE Re-Booking 
+In the Item Management module, you can transfer the physical stock levels for a item from one storage location to another in the Stock Transfer window. With the MDE Stock Transfer module, stock transfers of items can be performed in the context of mobile data entry. This dialog provides the functionality available in the dialog opened via Action -> Stock transfer in the Item Management module, but in a different way and different manner. 
+Note:
+Some settings in the MDE standard are not used due to the limited size of the screens of MDE devices. 
+Using mobile data entry, though, this data can be read in automatically using the barcodes of the affected items and storage locations. The information is displayed directly on the display of the MDE device in this case. To do this, you first scan the item barcode, then thestorage location barcode from which the item will be transferred. Now remove the desired quantity, scan the barcode of the storage location to which this quantity should be added, and finally enter the quantity to be transferred. 
+
+The procedure for a stock transfer can be summarized as follows:
+11.  The user receives a message that a warehouse stock transfer should take place.
+12. The user opens the MDE Stock Transfer module on the MDE device.
+13. The user scans the barcode from the item whose physical stock level should be transferred. 
+Note:
+If storage location minus postings are not enabled for a warehouse, then you can only transfer a maximum of the quantity located in a storage location. However, if storage location minus postings are enabled, then  you can transfer any quantity of the item.
+14. The user scans the barcode of the storage location of the item. The system now checks the combination of the storage location number and item number.
+* If the combination is not valid, then an error message is output. 
+15. The user now scans the new storage location to which the quantity removed should be added. 
+16. The user enters the quantity of the item that has been transferred. 
+17. Every input can be confirmed by clicking on the icon  after making each entry. As an alternative, the user can also confirm the data using the ENTER key. In each case, the changes made since the last input are saved automatically and sent to eEvolution. 
+Note:
+Since the quantity to be transferred is always entered last when transferring stock, the data is transmitted only after entering this last piece of data. 
+The system makes the necessary changes to the warehouse tables and updates them.
+ Clicking on the icon cancels the process, and no items are transferred. 
+Note:
+Even if a stock transfer is canceled after entering the last data, meaning after entering the quantity to be transferred, all changes are still passed to eEvolution. 
+18. The desired quantity of the item has been successfully transferred. 
+MDE Picking
+Basically, the procedure for picking using a mobile data entry device can be summarized as follows: 
+
+ 
+Note:
+A prerequisite for picking is naturally that an order has been successfully transferred to the Picking module. 
+1. The user receives a message that a new commission is available.
+2. The user marks the commission and is then shown the pick list on the screen.
+Note:
+It is also possible to print out the pick list. The user now has the option to print pick labels for the items to be picked. 
+3. The user opens the Picking module on the MDE device.
+4. The user selects the appropriate commission on the screen or scans the barcode of the printed pick list.
+5. The commission is displayed on the MDE device together with its line items. 
+Note:
+The order is generally not specified in the standard, but is determined by the person performing picking themselves! 
+However, an optimal picking order can be implemented in the framework of a customer-specific adaptation, for example the sorting of items to be picked based on the storage locations in which they are located. 
+7. The user scans the storage location barcode from the item to be picked.
+8. The user scans the item removed. The system now checks the combination of the storage location number and item number.
+* If the combination is not valid, then an error message is output. 
+9. If the correct item was removed, then the user enters the quantity of items removed.
+* The user is informed in a dialog of over- and undercommissions and, if desired, is given the opportunity to correct the quantities.
+PLEASE NOTE:
+If storage location minus postings are not enabled for a warehouse, then an error dialog appears if the picked quantity exceeds the quantity actually available in a storage location. 
+If picking cannot be completely finished due to a lack of inventory, then the user has the opportunity to perform a partial picking. In this case, a new commission is created for the quantity not yet picked. 
+10. Every input can be confirmed by clicking on the icon  after making each entry. As an alternative, the user can also confirm the entry using the ENTER key. In each case, the item is immediately stored automatically after making the last entry. 
+The process can be canceled using the icon.
+Steps six through eight are now repeated for all line items to be picked. 
+11. If a position needs to be canceled during picking, then use the  icon to cancel the position. 
+Please note:
+This function is only available for standard labels!
+12. The system informs the user that picking is completed as soon as all items on the pick list have been processed.
+13. The user closes the picking process either on the terminal or on their MDE device. In each case, closing the current commission writes the quantities already picked (including their storage locations as well as picked serial and batch numbers) to the Picking module. 
+* If there were over- or underpicked positions, then the user is informed of this again at this point as well. 
+Note:
+If the option 'E-mail for over-/undercommissions' is enabled in the system settings, then the agent responsible is sent an e-mail containing the picking number and the over- or underpicked positions.
+Note: 
+The picking process can be interrupted at any time and then resumed at a later time. The changes are automatically saved when exiting the MDE Picking module, and the corresponding commission can then be called up later manually or using the corresponding pick list barcode. 
+Pack
+The picked orders are packaged directly after picking. A separate dialog was programmed for mobile data entry in which the selection of the picking position and the packaging is performed. In a third section of the window, you link the picking position and the selected packaging.
+There are two basic approaches for packaging picking assignments. On the one hand, you can pack individual commission orders specifically, and on the other hand, you can also pack all picked but not yet not packed orders from a certain customer. The system can still monitor the permissible total weight of a package with its contents so that a warning appears as soon as the total weight defined for the packaging is exceeded.
+Packing can only be initiated if the order was successfully picked. Afterwards, the Packing dialog on the MDE device opens and the barcode of the pick list is scanned. Now you must select the desired packaging before scanning the individual pick labels of the items to be placed later in the package. For each item, the system checks again if it actually belongs to the pick list. If not, then a corresponding message is output. 
+This procedure also ensures that the system knows which packaging is specified for each item. After the last item of the pick list has been scanned, the MDE device reports that the packing process is complete. Finally, the address label for each package is printed and applied to every package. 
+Basically, the procedure for packaging using a mobile data entry device can be summarized as follows:
+  
+Note:
+A prerequisite for packing a picked order is naturally that the corresponding picking process completed successfully. 
+1. The user opens the Packing dialog on the MDE device.
+2. The user scans either the pick lists of the items to be packed or selects the appropriate commission. 
+3. The picked line items are assigned to the packages. 
+Note:
+You can use packaging already defined in the system as well as create new packages here. 
+4. The user scans the items to be packed. The items are then assigned to the previous selected packages by the system.
+Important note!
+If the system is monitoring the total weight of package, then a message is output if the permissible total weight of a package is exceeded.
+5. You can reject the data you have entered using the  icon. 
+6. Using the  icon you cancel a position and remove it from the packing list. 
+7. With the  icon you save the packaging information of an item and send it to eEvolution. The ENTER key can also be used for this purpose as an alternative. 
+8. The system reports the completion of the packaging process.
+9. Using the  icon, you can print the address label, the packing list, and if necessary the package labels for the package.
+Note:
+The standard printer specified on the terminal server is used for printing in this case. 
+MDE Inventory
+In the MDE Inventory Management module, all item quantities available in a warehouse can be entered immediately in the system with a MDE device, which means it is a supplement to the count lists. 
+The steps required for mobile data entry in the framework of taking an inventory can be summarized as follows:
+Note
+Stocktaking requires the following two perquisites to be fulfilled:
+1. An inventory process must have been created in the Inventory Management module. 
+2. Only items transferred to inventory management can be counted. 
+Important note:
+Only ONE open inventory is allowed to exist in the system since the MDE device automatically searches for an open inventory from the database when the MDE Inventory Management module is started. 
+
+Figure 18 - MDE-stocktaking
+1. The user opens the Inventory Management module on the MDE device.
+2. The user scans the storage location barcode.
+3. The user scans the item barcode from one of the items stored in the storage location.
+4. The Inventory Management module now displays the name of the item. The user then counts the number of items, enters this number in the MDE device, and 
+confirms this entry using the  icon or via ENTER as an alternative. 
+The process can be canceled using the icon.
+Steps 2-4 are now repeated for all other items. 
+5. Once all desired items have been inventoried, the inventory needs to be closed on the terminal. 
+Important note:
+The MDE Inventory Management module is only used to record the quantities for an inventory.  The creation and the closing of an inventory is still performed as usual in the Inventory Management module. 
+Please note:
+After an inventory, there are often items that have been suggested by the system for the inventory but which have not been inventoried yet. 
+Depending on the settings, these items can either be initialized by the system to 'NULL' or the item quantity available before taking inventory can be used. These settings are specified directly in the Inventory Management module. Please read the corresponding help entries for these settings. 
+ 
+ WikiERP Homepage
+ Vital functions which a modern ERP system must have for meeting the typical requirements of medium-sized companies are explained in WikiERP. 
+ Would you like to know (...) 
+(...) what an ERP system is?
+ (...) what a software solution must provide for companies? 
+(...) what special requirements can be resolved by ERP systems? 
+(...) what functions should ERP software ideally have? 
+ WikiERP provides you with a quick ERP Overview of Functions and Benefits. 
+Overview - Functions and Use of ERP Systems
+ERP System: Corporate Software for Commerce, Production or Services 
+An ERP system is often referred to as ERP software, ERP solution, corporate software or merchandise management system. This type of corporate solution helps management and employees plan, control and evaluation corporate processes. An ERP solution is used for this in the sectors procurement, production, planning, warehouse management, logistics, financials, sales, marketing, commerce, project business, customer service, service and human resources. 
+Comprehensive support of corporate processes 
+ An important feature of an innovative ERP solution is that it can be used to plan, control and evaluate these processes across departmental or company boundaries. Corporate software is used to do away with the need for manual processing of data at department or company boundaries, which unnecessarily prolongs the processes involved. ERP producers therefore use a common database and employ an integration architecture that integrates all processes and data and enables these to be linked and automated. 
+Key benefits of an ERP system: Reduced work load
+ An ERP system is provided to relieve the work load of repetitive tasks on employees, to facilitate performance of all work steps involved and to simplify communication of business processes throughout the company. Important criteria for measuring the success of such a system are time savings for work steps, reduction of errors, enhancing of data quality and improvement of efficiency or acceleration of customer inquiries. 
+Key benefits of an ERP system: Enhanced transparency 
+At the same time, an ERP system must also provide transparency to enable all employees to gain a quick overview of the status of a procedure or process. In addition, ERP solutions also aid in decision-making regarding capacity, productivity and economical viability of a company and help illustrate optimization potential. 
+
+
+ 
+
+
+
+1
+
+
+
+
+
+
