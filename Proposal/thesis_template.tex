@@ -1,0 +1,439 @@
+\documentclass[a4paper,12pt]{article}
+
+% package management
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath} % Mathematische Symbole
+\usepackage{amssymb} % Mathematische Symbole
+\usepackage{graphicx} % Bilder einfügen
+\usepackage[UKenglish]{babel}
+\usepackage[]{algorithm2e}
+\usepackage[export]{adjustbox}
+\usepackage{enumerate}
+\usepackage{tabularx} 
+\usepackage{cite} 
+\usepackage{fancyhdr} 
+\usepackage{hyperref}
+\usepackage{pdfpages}
+\usepackage{natbib}
+\usepackage{xcolor}
+\bibliographystyle{ieeetr}
+
+
+
+% Titlepage
+\title{
+\begin{flushright}
+\includegraphics[width=2.5cm]{./figures/logoUHi.jpg}\\
+\vspace{0.75cm}
+{\small
+Wirtschaftsinformatik\\und Maschinelles Lernen\\
+Stiftung Universität Hildesheim\\
+Marienburger Platz 22\\
+31141 Hildesheim\\
+Prof. Dr. Dr. Lars Schmidt-Thieme\\
+Jonas Falkner, M.Sc.\\
+Nils Westphal\\} 
+\end{flushright}
+\vspace{2cm}
+% fill in your information where stated
+\begin{center}
+\textbf{Research Proposal}\\
+ChatBot a Conversational AI %fill in!
+\end{center}
+}
+\author{\textbf{Niraj Dev Pandey}}
+\date{271484 \\ %fill in!
+(pandey@uni-hildesheim.de) \\  %fill in!
+\ \\
+\today}
+
+
+
+% document body
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+
+% Don't forget the abstract!
+\begin{abstract}
+Users are rapidly turning to company’s customer care to receive customer support about their difficulties while using any products or services. However, most of these queries are not being addressed on time or in some cases not addressed at all. Which leads to customer dis-satisfaction. COMPRA GmbH is one of those companies, which is also witnessing this problem. With the increase in number of user base and services, the customer support which is being done via phone, e-mails and ticket systems gets unnecessarily time-consuming. Another problem is to have human assistants in customer support and the cost it causes to the company. One way to solve this problem is to create a new conversational system to automatically generate responses for customers requests via a chat-Bot. Currently, in domain specific conversational systems structured data is being used for the bot to train however, gathering such a data-set is not an easy task for many companies. Preparing training data for chat-bots in conventional format itself is a time consuming and costly process. This thesis present a solution for data structurization for chat-bot training where bot will be able to understand user inputs and answer them accordingly. The goal is to develop a chat-bot from unstructured data by building a novel framework for feature extraction from such data. First, the performance will be tested by human analyst within the COMPRA GmbH and then we will deploy the COMPRA bot into real world and evaluate it's performance on genuine customers' queries.
+ 
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+%=======================================%
+% the real beef starts here...
+%=======================================%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+Chatbots are computer programs that can communicate with humans in human understandable language. In the early days they were called \textit{chat-robots}. The era of chat bot started in 1960's which were intended to see, if they can fool people that they are real human beings. Since last few years chat bots have became a buzz after the development of Apple's Siri, Microsoft's Cortona and Google's Google Assistant. Following sections discuss the various types of chat-bots and their characteristics.
+\subsection{Types of Chat-Bots}
+Chat-bot can be divided mainly into three types. Such as, \textit{Question-Answering Agent}, \textit{task-oriented dialogue system} and \textit{Social} or \textit{General purpose bot}.These categorization is based on the way the bot performs and the kind of tasks they tackle.The name itself  is explanatory. Nevertheless, let's dive deeper to know types of Chat-Bot in detail.  %\cite{JianfengGao2018}
+
+\subsubsection{Question-Answering Agent}
+Recent past has witnessed an increasing demand for question answering (QA) chat-bots that allow users to query large scale knowledge bases or document collections via natural language. Q-A agents are the simplest and straight forward bots. They can provide concise direct answers to user's questions. Most of the industries are using such type of bots for their business purposes. Most well known Q-A bots are being developed via platforms like \textit{Dialogue-flow.AI},\textit{ Wit.AI,Amazon Lex} and \textit{IBM Watson}. A Q-A bot works like a SQL system where you have a database and you query within the DB for any specific outcome. Here user query is the question and the outcome will be an answer. Later, people started calling it 'Knowledge Based- Question Answering system' or 'text-QA agent' [cite{JianfengGao2018 }]. These bots are trained on question-answer conversation pairs, where the bot returns an \textit{answer} for a query\textit{(question)} . Since, there are several ways to ask for any information therefore, these bots have numerous question-answer pairs to answer one query. Below is an example of Ubuntu open source data-set which is helpful to understand data format of Q-A chat-bots.
+
+\textit{Anybody familiar with laptop-mode here	how come i m changing laptop-mode conf but nothing is actually changing	 you d need to reboot possibly	what are you trying to change	at first it seemed to work but when i rebooted it seems to do nothing ...	i need to change the max cpu freq and hd idle time	surely that s a powernowd config option powernowde works on intel cpus too	this is n't a p4 is it	right but you have both installed	if you want	there s no real advantage to that tho .......and so on}
+
+\subsubsection{Task-oriented dialogue system}
+Task oriented chat-bots can also be called domain specific conversational systems. They can assist user from variety of tasks, such as fix a meeting, make a booking or look for a restaurant etc. These kind of bots can ask user for more information and return a response when all the \textit{slots} are fulfilled. Slots are referred to as the crucial information that needs to be provided by the user before getting to the final answer. Such as, a restaurant bot will only reserve a seat or tell the name of the restaurant, once you have provided the \textit{place, number of people} and other information alike. In case of task oriented chat-bots, data-set is always categorized into 'Intents', 'Entities' and 'Response'. Generally, a .json file format is preferred where we have a query followed by the intention and the entities. Response will be generated according to detected \textit{intent}. 
+\definecolor{mypink3}{cmyk}{0, 0.7808, 0.4429, 0.1412}
+
+
+     \{\\
+        "text":   "\textcolor{mypink3}{moderately priced restaurant that serves creative food}", \\
+        "intent": "\textcolor{mypink3}{inform}", \\
+        "entities": [\\
+          \{\\
+            "start": \textcolor{mypink3}{41},\\ 
+            "end": \textcolor{mypink3}{49}, \\
+            "value": "creative", \\
+            "entity": "cuisine"\\
+          \},\\
+          \{\\
+            "start":\textcolor{mypink3}{ 0},\\ 
+            "end": \textcolor{mypink3}{10},\\
+            "value": "moderate", \\
+            "entity": "price"\\
+          \}\\
+        ]\\
+     \},\\
+
+
+The above data is the NLU part of the entire data-set used for task-oriented agents. Response generation is a mapping of intent detected and the answers found for that particular intent.
+\subsubsection{General purpose Chat-Bot} 
+Here a person can talk to the bot as your companion. You can ask general questions which the bot is trained on. Such as, what's the color of the sky, I am sad today, would you like to drink a beer etc. These bots are mostly trained on publicly available data such as  \textit{Movie dialogues, Cornell, Opensubs, Scotus data} etc. These datasets contains conversations between two individuals or more. Since the conversation in dataset differs from context to context, general purpose bots tend to generate unexpected responses.
+\bigskip
+
+In industrial domain none of the customer or clients are interested to ask what's a color of the sky hence, our study is about domain specific chat-Bot development, which would be responsible to answer queries within a particular domain.
+
+%\begin{itemize}
+%  \item What is the study about?
+ % \item Why is it important?
+ %\item What is the problem, question, hypothesis, theory to be tested, etc.? Unavailability of the call attender, bussiness days only
+ % \item What is some of the most important relevant work done in this area?
+ % \item What further research is needed in this area?
+ % \item What can be the usefulness of your study?
+%\end{itemize}
+
+
+\subsection{Motivation}
+Developing an intelligent dialogue system which is trained on unstructured data and can answer questions of topics ranging from one business module to other, has been one of the long awaited goal in AI. Since, manual creation of dataset takes resources that many companies are not ready to afford therefore, it is a big obstacle in the path of chatbot development. This study will address the  preparation of structured data for chat-bot training and exploring possibilities to develop chatbot on unstructured text. 
+\bigskip
+
+Another motivation behind this research is to address customer's  queries economically. The amount of human workforce needed to answer costumers' queries are so much that companies are heading towards chat-bots and trying to use as less human call attenders as they can. Working hours is also one of the concern. Particularly Germany have 5 to 8 hours a day service centers open and only business days are applicable. What if user wants some assistant on weekend? He/she has to wait till next week which leads to customer dis-satisfaction in many cases. India is a leading call center service provider, one can find that Indian companies providing call service 24x7. Which results in huge economical challenges for companies. Some say "human sleeps, take vacations and salary machine doesn't". This is the prime reason for companies to automate tasks and services. Present research provides a solution to COMPRA GmbH to deal with customers' queries efficiently and economically.
+
+
+%edit the above paragraph and stress more on the unstrictured dataset problem
+  
+
+\newpage
+
+\subsection{Problem Statement}
+%In this section the problem and the challenges w.r.t. the topic are introduced.
+Collecting structured data for chat-bot development is a costly and time consuming process. Every industry documents their products and services providing information and FAQ's in some format. These documents are not useful for chat-bot development directly. Currently, manual data engineering techniques are required to convert the documents in a proper format. However, not all the businesses have resources to invest in such a costly and time consuming process. In other words, documents containing information about the products and services of a company are mostly available but needs manual techniques to  further engineer them. This research aims to develop a framework which is able to give a structure to the raw data and can be used to train a chatbot model. 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Literature Review}
+
+
+\subsection{Research Questions}
+Many websites/companies have a domain specific chat-Bot on their web page to navigate user throughout their products and services. Most of them or in most cases all of them are developed on the structured data. Where either their data set is in the form of question and answer pair respectively or any other structure (Json, markdown etc). Collecting structured data for all the services and the products is a big concern as well as time consuming and an expensive process. This is also a reason that companies haven't been able to successfully develop a domain specific chat-Bot which can tackle a large scopic conversation.
+\bigskip
+
+One might have witnessed that for simple question bot replies "I am sorry! I am just a bot, go easy with me". This is the case with many well known chat-Bots too. Be it Slack or any other. One reason can be lack of \textbf{data}. Industries have websites full of text with product description or documents in a form of general reading. However, they lack when it comes to get relevant structural data for all their products and services for chat-Bot development. In addition to this, companies are evolving so fast that every now and then they get new products and services.Whereas, they lack to collect structured information about newly launched services to train the chatbot. Following are the research questions which is being addressed by present thesis.
+\begin{itemize}
+\item How can we tackle the data structurization for industry chatbot? i.e. how to convert unstructured data into structure or semi-structure one which can be useful for chatbot development. Is there any possibility to overcome from structured data crisis.
+\item How chatbot researchers can provide a chat-Bot development platform for unstructured corpus?
+\item What is the most significant effect of structure and unstructured data corpus on the performance of Chat-bots in industry domain?
+\item What are main development factors which occur while building a domain specific chat-Bot from unstructured corpus, and how can these commonalities be used to aid the industrial community in prevention of the problem?
+%edit for new questions reaalted with problems in structuring the data.
+\end{itemize}
+
+
+%Starting from the problem statement, try to formulate some research questions, that you want to answer in your thesis. (see %%e.g. https://writingcenter.gmu.edu/guides/how-to-write-a-research-question)
+ 
+
+
+\subsection{Related Work / State-of-the-Art}
+%Related work describes the State-of-the-Art existing work (to solve the same problem). The existing methods/solutions should be %classified and compared with current work (how current work distinguishes from previously existing methods/solutions).
+%Do not forget to mention the base line research paper which the current paper tries to improve. Also provide references to all the %research papers mentioned in this section.
+
+Chat bots are around since 1966, when first Eliza bot was released. It was a rule based system which can find cue words or phrases in the input and reply as per programmed responses. For example if a query contains a phrase "friends" Eliza will ask you "tell me more about your friends"[1,4].This is how one can converse and it feels like you are talking to a human being. Eliza was not intended to deploy into industry domain rather the goal was to check if Eliza can fool human that they are talking to an individual. [cite{JosephWeizenbaum1966, Lorenz2017}]
+Eliza works on structured data where we have reflection words and psychobabble sentences. Reflection words and Psychobabble sentences can be seen in following images. 
+
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[b]{0.29\textwidth}
+    \fbox{\includegraphics[width=\textwidth]{./figures/Capture.PNG}}
+    \caption{ Reflection words for Eliza.}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.55\textwidth}
+    \fbox{\includegraphics[width=\textwidth]{./figures/eliza2.PNG}}
+    \caption{Psychobabble sentences for Eliza.}
+    \label{fig:eliza}
+  \end{minipage}
+
+\end{figure}
+
+Looking at the data format one can see that Eliza repeat the given input and form meaningful responses so that an individual can feel that he/she is talking to a human being. 
+
+\bigskip
+
+After Eliza, PARRY was introduced in Stanford University in 1995. It was also known an \textit{Eliza with attitude}, developed by psychiatrist Kenneth Colby. Parry was tested on the eminent testing method Turing test. Where a group of experienced psychiatrists analyzed a combination of real patients and a computer program \textbf{Parry} using teleprinter. Another group of 33 psychiatrists were shown transcripts of the talk. The two groups were then asked to identify which of the "patients" were human and which were computer programs. The psychiatrists were able to identify only 48 percent of the time [2]. [cite{Colby1972}]
+A.L.I.C.E. was then the most popular chabot based on Natural Language Processing. It was inspired by the first chatbot Eliza. Alice can converse with the user applying some heuristic pattern matching rules given a user's query. It was awarded as talking robot, humanoid and many more but unfortunately it failed the turing test [3,4].[cite{Richard}] The data for Alice is written in .aiml (Artificial Intelligence Mark-up Language) format which contains question followed by an answer. The format of the data which A.L.I.C.E.works on can be seen in figure.~\ref{fig:Reflection}
+\bigskip
+
+Alice doesn't save the conversation history and it doesn't really understand what you said but respond you based on what she has in her brain.[cite{alexander2007}] Right after the ALICE, industries started looking for the domain specific conversational system to talk to their customers, employees or with any other business. Haptik Inc. [6] (haptik2017) did a survey in 2017 on chat-Bot existence in the market. According to this report "currently exist over 40,000 chatbots across multiple platforms and that the market size of chatbots can grow from 700 million dollars in 2016 to 3 billion dollars in 2021".  The report is from 2017, the numbers must have gone up by now. In 2016 Oracle Inc. survey says, that 80 percent of the 800 interviewed businesses were already using chatbots or planned to implement them into their businesses by 2020.
+
+\bigskip
+
+Ask Me Anything: Dynamic Memory Network for Natural Language Processing published in 2016. This research presents a new kind of network called \textit{Dynamic Memory Network}for neural networks. It process input sequences and questions, form episodic memories, and generates relevant answers [5]. Such as,\\
+Sequence of input - Ankit went to hallway. Ankit picked-up the football. He traveled to the garden.\\
+Questions - Where is football?\\
+Answer - Garden %cite{ankit2016}
+
+The most well known work has been done by Alibaba when they introduced AliMe chatbot for their costumer service. It helped Alibaba significantly during the peak selling season. AliMe is a \textit{Sequence to Sequence} and \textit{Rerank based} chatbot engine.[cite{Minghui2017}]. Later transfer learning and reinforcement learning were used to improve the performance of the bots in 2017-18 by Google and Alibaba researchers.[cite{Minghui2018, YuWu2017, buck18}] Currently, .json format of data is widely in use which can be seen \ref{Task-oriented dialogue system} here. 
+
+\begin{figure}
+\fbox{\includegraphics[width=\textwidth]{./figures/alice1.PNG}}
+\caption{Data Format for A.L.I.C.E.}
+\label{fig:Reflection}
+\end{figure}
+
+In conclusion, almost all chatbots relied on structured data to train their model on. In some cases the bot were tested on the publicly available structured data to compare their methods with existing research. 
+
+
+\subsection{Our Approach}
+"If knowledge to be extracted is expressed directly in the documents then \textit{Information Extraction} alone can be used effectively for \textit{Text Mining}. However, if the text information which we are aiming for is in unstructured text format rather than abstract knowledge, it might be helpful to use IE to convert the unstructured data into a structured database" [cite{Raymond}]. The present research will mine knowledge from unstructured text using information extraction and then giving extracted information a proper format. After getting the structured information, another challenge would be to label the intent of the users' question along with the entities attached to that particular intent. Mapping questions with the answers using TF-IDF approach might not work because of the ambiguity in the text corpora. Therefore, after extracting relevant information our attempt would be to label intent, entities and automate this labeling process rather than hand engineering [cite{Raymond}]. Our information extraction approach is slightly similar to the one of [cite{Raymond}]. When it comes to label queries with the intents and entities, there could be two approaches either using cloud API's or developing our own framework. Using cloud API's are the simplest and the easiest way to proceed. 
+
+\bigskip
+ 
+%\begin{itemize}
+ % \item What is the state-of-the-art? 
+ % \item What can already be done? 
+ % \item What are problems and limitations?
+%\end{itemize} 
+
+\subsection{Definitions}
+
+Chat-Bot - Chat-Bot(n.):\\
+a computer program designed to simulate conversation with human users, especially over the Internet.(Oxford Dictionary)\\
+\\
+AIML - Artificial Intelligence Markup Language\\
+Bot - Chat-Bot or Conversational Agent\\
+NLU - Natural Language Understanding\\
+NLP - Natural Language Processing\\
+NLG - Natural Language Generation\\
+RL - Reinforcement Learning\\
+TL - Transfer Learning\\
+DB - Data Bases\\
+KB - Knowledge Base\\
+IR - Information Retrieval \\
+DM - Data Mining\\
+TM - Text Mining\\
+IE - Information Extraction\\
+
+
+
+
+
+%\textbf{Example:}
+
+%\begin{itemize}
+ % \item \textbf{Recommender System (RS):} A special information system interacting with a large and complex information space (an item set of size $n$, where the term item represents every possible object w.r.t. a recommendation task, e.g. movies, books, music, news) in order to provide (a list of) items that are likely to be of interest to the user in a structured and automated way \cite{lu2012, igual2017}%
+%\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\section{Research Design}
+%The design of your research. Compare e.g. to \cite{peffers2006}
+
+%\subsection{Problem identification and motivation}
+%\ ...
+
+%\subsection{Objectives of a solution}
+%\ ...
+
+%\subsection{Design and development}
+%\ ...
+
+\subsection{Data-set}
+
+Present research is going to use the unstructured data-set provided by COMPRA GmbH. It contains the detailed documentation of their product and services. They call them modules. We are going to choose a module and will clean the data and convert it into a format as such that we can train our chatbot on. After successful implementation we will add more modules.
+
+%\begin{enumerate}
+%  \item Data to use
+%  \item SotA models to compare against
+%  \item ...
+%\end{enumerate}
+
+
+
+\subsection{Evaluation}
+For evaluation, we have adopted the way in which most famous chat-Bot \textbf{AliMe} was evaluated. COMPRA GmbH's analysts go through the answer of each testing question (two analysts for the experiment comparing with another public chat-Bot, and one for the other experiments), and mark them with three graded labels: “0” for unsuitable, “1” means that the answer is only suitable in certain contexts, “2” indicates that the answer is suitable. To determine whether an answer is suitable or not, we define five evaluation rules, namely “grammatically correct”, “semantically related”, “well-spoken language”, “context independent” and “not overly generalized”. An answer will be labeled as suitable only if it satisfies all the rules, neutral if it satisfies the first three and breaks either of the latter two, and unsuitable otherwise.%\cite{Minghui2017}
+
+
+
+
+%  \item Quality measures/metrics
+%  \item Scalability measures
+\section{Organizational Stuff}
+
+\subsection{Communication}
+Looking at the busy schedule of both the supervisor, I would request to have meeting once in every 2-3 week. I prefer 2 weeks though, so that we can proceed as quickly as possible. This will allow both of the supervisors to track my work and guide extensively. It's not necessary all the time to meet with all the COMPRA team but my personal meeting with Jonas will definitely help me a lot.
+\bigskip
+
+\subsection{Presentation:}
+Generally professor Schmidt organize joint interim presentation for all the master thesis aspirant.The first idea talk is on 27th of November and next interim presentation date will be announce thereafter.
+\bigskip
+
+\subsection{Publication:} 
+As we all know that we are attempting to tackle a task that has nearly no baseline (looking at the data format), this is the first draft of the thesis and beginning of the research. We all will get to know about the publication decision soon. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%A table \ref{timetable} presenting your rough working plan for the thesis
+
+\subsection{Provisional time-table}
+The table \ref{timetable} will structure my whole work and research process. However this is not the final structure, since it still can change while working on the thesis and by acquiring new results and insights. Nevertheless it is a first attempt to generally structure my final thesis.
+\begin{table}
+\centering
+ \caption{Timetable}
+\label{timetable}
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline 
+\textbf{Time} & \textbf{Activities} & \textbf{Results} \\
+\hline 
+ October 2018 & Learning Latex, \newline 
+ Literature research, \newline 
+ Research questions & research proposal, \newline 
+ related work, \newline 
+ bibliography \\
+\hline 
+ November 2018 & Data Pre-processing,\newline
+Cleaning,\newline
+extracting useful info  &  Semi-structured data \\
+\hline
+ December 2018 & First Implementation & Analysis of the result \\
+\hline 
+January 2019 & Further Implementation,\newline
+improve existing implementation & Analysis of the result \\
+\hline 
+
+ Fabruary 2019 & ..... & ........\\
+\hline
+
+ March 2019 & ..... & ........\\
+\hline 
+\end{tabularx}
+\end{table}
+
+
+
+\clearpage
+\bibliography{references}
+\bigskip
+
+\textbf{Coming Soon}
+
+I have already put all the references in bibliography section but not able to cite properly. Therefore, I am sorry here is no reference section. I'll soon add those. 
+
+\end{document}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{How to \LaTeX: Some advanced examples}
+%\subsection{Images/Figures}
+
+%Images must have a reference and a description. you can use labels to reference them: Figure \ref{fig:unihi} is really beautiful. 
+
+%\begin{figure}
+%\centering
+%\includegraphics[width=4cm]{./figures/logoUHi.jpg}
+%\caption{Logo of the University of Hildesheim.}
+%\label{fig:unihi}
+%\end{figure}
+
+%\subsection{Tables}
+
+%Tables can be referenced like images.
+
+%\begin{table}
+%\centering
+%\caption{Table Example}
+%\label{tab:bsptab1}
+%\begin{tabular}{|l|c|c|c|c|c|c|}
+%\hline 
+%& Value 1 & Value 2 & Value 3 & Value 4 & Value 5 & Value 6 \\
+%\hline 
+% Entry 1 & 0.756 & 2.133 & 0.745 & 2.111 & 0.743 & 2.134 \\
+%\hline 
+% Entry 2 & 1.1 & 0.9 & 1.1 & 0.9 & 1.1 & 0.9 \\
+%\hline
+%\end{tabular}
+
+%\end{table}
+
+
+%\subsection{Formula}
+
+%Also formulas should be numbered and can be referred to like images and tables. See Eq. \ref{form:e2}
+%\begin{equation}
+%\label{form:e1}
+% e = \sum^{\infty}_{k=0} \frac{1}{k!} \; ,
+%\end{equation}
+
+%\begin{equation}
+%\label{form:e2}
+% e = \lim_{n \rightarrow \infty} (1+\frac{1}{n})^n \; .
+%\end{equation}
+
+%$e$ can be written with Eq. \ref{form:e1} or Eq. \ref{form:e2}.
+
+%\subsection{Algorithms and Pseudocode}
+
+%\begin{algorithm}[H]
+% \KwData{this text}
+% \KwResult{how to write algorithm with \LaTeX2e }
+% initialization\;
+% \While{not at end of this document}{
+%  read current\;
+%  \eIf{understand}{
+%   go to next section\;
+%   current section becomes this one\;
+%   You can write formulas $\sum_{i=0}^N A_i^2$\;
+%   You can refer to formulas, see Eq. \ref{form:e1}\;
+%   }{
+%   go back to the beginning of current section\;
+%  }
+% }
+% \caption{How to write algorithms}
+%\end{algorithm}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
