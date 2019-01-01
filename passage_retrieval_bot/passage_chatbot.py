@@ -3,7 +3,7 @@
 """
 
 Author __Niraj Dev Pandey__
-Purpose __ TF_IDF Pssage retrieval bot__
+Purpose __ TF_IDF Passage retrieval bot__
 
 """
 
