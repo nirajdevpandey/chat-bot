@@ -5,7 +5,7 @@
 
 
 ### chat-bot
-This repository is dedicated for chat-bot project 
+This repository is dedicated for chat-bot university thesis project for earning Data Analytics master degree
 
 Here is what the proposal of the project looklike
 ***
