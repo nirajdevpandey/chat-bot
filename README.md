@@ -31,7 +31,7 @@ evaluate it’s performance on genuine customers’ queries.
 ***
 Since there are no such algorithm exist, I am trying to combine few algorithm to make it happen. Currently, almost all of the chatbot works with structured information. Machine Comprehension can be one thing to work with, in this situation. Stay tuned for future updates. 
 
-"""
-- Please give me some idea if you have read the proposal. I would highly appreciate that.
+```diff
++ Please give me some idea if you have read the proposal. I would highly appreciate that.
 
-"""
+```
